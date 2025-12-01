@@ -1,1 +1,2 @@
-# otus-mssql-peregudova
+Домашние задания курса OTUS "MS SQL Server Developer".
+Группа 2025-01.
