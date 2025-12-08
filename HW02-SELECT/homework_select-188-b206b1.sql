@@ -120,10 +120,10 @@ T3.[DeliveryMethodName]
 Сделать без подзапросов.
 */
 SELECT TOP 10
-    T3.[OrderID],
-    T3.[OrderDate],
-    T4.[SearchName] AS [CustomerName], 
-    T5.[SearchName] AS [SalespersonName]
+    T3.[OrderID]
+    ,T3.[OrderDate]
+    ,T4.[SearchName] AS [CustomerName]
+    ,T5.[SearchName] AS [SalespersonName]
 FROM [WideWorldImporters].[Sales].[Orders] T3
 INNER JOIN [WideWorldImporters].[Application].[People] T4 
     ON T4.[PersonID] = T3.[CustomerID]
