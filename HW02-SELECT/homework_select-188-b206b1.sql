@@ -119,17 +119,18 @@ T3.[DeliveryMethodName]
 который оформил заказ (SalespersonPerson).
 Сделать без подзапросов.
 */
-ТУТ НЕ ДОДЕЛАНО, НУЖЕН МАССИВ
-SELECT 
-      T3.[OrderID]
-      ,T4.[PersonID]
-      ,T3.[SalespersonPersonID]
-      ,T4.[SearchName]
-  FROM [WideWorldImporters].[Warehouse].[StockItems] T1
-  JOIN [WideWorldImporters].[Sales].[OrderLines] T2 ON  T2.[StockItemID]= T1.[StockItemID]
-  JOIN [WideWorldImporters].[Sales].[Orders] T3 ON T3.[OrderID]=T2.[OrderID]
-  JOIN [WideWorldImporters].[Application].[People] T4 ON T4.[PersonID]=T3.[PickedByPersonID]
-  WHERE T1.[StockItemName]='Chocolate frogs 250g'
+SELECT TOP 10
+    T3.[OrderID],
+    T3.[OrderDate],
+    T4.[SearchName] AS [CustomerName], 
+    T5.[SearchName] AS [SalespersonName]
+FROM [WideWorldImporters].[Sales].[Orders] T3
+INNER JOIN [WideWorldImporters].[Application].[People] T4 
+    ON T4.[PersonID] = T3.[CustomerID]
+INNER JOIN [WideWorldImporters].[Application].[People] T5 
+    ON T5.[PersonID] = T3.[SalespersonPersonID]
+ORDER BY 
+    T3.[OrderDate] DESC;
 
 /*
 6. Все ид и имена клиентов и их контактные телефоны,
