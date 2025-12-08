@@ -78,17 +78,8 @@ SELECT
   FROM [WideWorldImporters].[Sales].[Orders] T1
   JOIN [WideWorldImporters].[Sales].[Customers] T2 ON T2.[CustomerID] = T1.[CustomerID]
   JOIN [WideWorldImporters].[Sales].[OrderLines] T3 ON T3.[OrderID] = T1.[OrderID]
-
- ORDER BY 
-    DATEPART(quarter, @dt),
-    CASE 
-        WHEN MONTH(@dt) BETWEEN 1 AND 4 THEN '1'
-        WHEN MONTH(@dt) BETWEEN 5 AND 8 THEN '2'
-        WHEN MONTH(@dt) BETWEEN 9 AND 12 THEN '3'
-    END,
-    T1.[OrderDate]
-OFFSET 1000 rows 
-FETCH NEXT 100 rows only 
+  WHERE  (T3.[UnitPrice] > 100 OR T3.[Quantity] > 20)
+    AND T1.[PickingCompletedWhen] IS NOT NULL
 
 /*
 4. Заказы поставщикам (Purchasing.Suppliers),
@@ -139,11 +130,11 @@ ORDER BY
 */
 
 SELECT 
-      T4.[PersonID]
+      T4.[CustomerID]
       ,T4.[PhoneNumber]
   FROM [WideWorldImporters].[Warehouse].[StockItems] T1
   JOIN [WideWorldImporters].[Sales].[OrderLines] T2 ON  T2.[StockItemID]= T1.[StockItemID]
   JOIN [WideWorldImporters].[Sales].[Orders] T3 ON T3.[OrderID]=T2.[OrderID]
-  JOIN [WideWorldImporters].[Application].[People] T4 ON T4.[PersonID]=T3.[PickedByPersonID]
+  JOIN [WideWorldImporters].[Sales].[Customers] T4 ON T4.[CustomerID]=T3.[PickedByPersonID]
   WHERE T1.[StockItemName]='Chocolate frogs 250g'
-  GROUP BY T4.[PersonID],T4.[PhoneNumber]
+  GROUP BY T4.[CustomerID],T4.[PhoneNumber]
